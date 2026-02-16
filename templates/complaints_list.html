@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}My complaints — Campus Platform{% endblock %}
+{% block content %}
+<h1 class="page-title">My complaints</h1>
+<div class="btn-group mb-2">
+  <a href="{{ url_for('raise_complaint') }}" class="btn btn-primary">Raise new complaint</a>
+</div>
+
+{% if complaints %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Submitted</th>
+          <th>Remark</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in complaints %}
+        <tr>
+          <td>{{ c.category }}</td>
+          <td>{{ c.title }}</td>
+          <td><span class="status-badge status-{{ c.status|lower|replace(' ', '') }}">{{ c.status }}</span></td>
+          <td>{{ c.created_at.strftime('%d %b %Y') if c.created_at else '-' }}</td>
+          <td>{{ c.admin_remark or '-' }}</td>
+        </tr>
+        <tr class="text-muted" style="font-size: 0.9rem;">
+          <td colspan="5" style="padding-left: 2rem;">{{ c.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">You have not raised any complaints yet. <a href="{{ url_for('raise_complaint') }}">Raise one</a>.</p>
+{% endif %}
+{% endblock %}

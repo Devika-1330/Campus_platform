@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — Campus Platform{% endblock %}
+{% block content %}
+<h1 class="page-title">Admin Dashboard</h1>
+<p class="text-muted mb-2">Centralized view of complaints and lost & found reports.</p>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="number">{{ pending }}</div>
+    <div class="label">Pending complaints</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">{{ in_progress }}</div>
+    <div class="label">In progress</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">{{ resolved }}</div>
+    <div class="label">Resolved</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">{{ lost_open }}</div>
+    <div class="label">Open lost items</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">{{ found_open }}</div>
+    <div class="label">Open found items</div>
+  </div>
+</div>
+
+<div class="btn-group">
+  <a href="{{ url_for('admin_complaints') }}" class="btn btn-primary">Manage complaints</a>
+  <a href="{{ url_for('admin_lost_found') }}" class="btn btn-primary">Manage Lost & Found</a>
+</div>
+
+<h2 class="section-title">Recent complaints</h2>
+{% if recent_complaints %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in recent_complaints %}
+        <tr>
+          <td>{{ c.category }}</td>
+          <td>{{ c.title }}</td>
+          <td><span class="status-badge status-{{ c.status|lower|replace(' ', '') }}">{{ c.status }}</span></td>
+          <td>{{ c.created_at.strftime('%d %b %Y') if c.created_at else '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <a href="{{ url_for('admin_complaints') }}" class="btn btn-secondary btn-small mt-2">View all complaints</a>
+{% else %}
+  <p class="text-muted">No complaints yet.</p>
+{% endif %}
+
+<h2 class="section-title">Recent lost items</h2>
+{% if recent_lost %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Location</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in recent_lost %}
+        <tr>
+          <td>{{ item.item_name }}</td>
+          <td>{{ item.location or '-' }}</td>
+          <td><span class="status-badge status-{{ item.status }}">{{ item.status }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">No lost items.</p>
+{% endif %}
+
+<h2 class="section-title">Recent found items</h2>
+{% if recent_found %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Location</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in recent_found %}
+        <tr>
+          <td>{{ item.item_name }}</td>
+          <td>{{ item.location or '-' }}</td>
+          <td><span class="status-badge status-{{ item.status }}">{{ item.status }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">No found items.</p>
+{% endif %}
+{% endblock %}

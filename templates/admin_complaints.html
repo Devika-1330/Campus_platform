@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Manage complaints — Admin{% endblock %}
+{% block content %}
+<h1 class="page-title">Manage complaints</h1>
+<a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary btn-small mb-2">← Dashboard</a>
+
+{% if complaints %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Category</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Submitted</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in complaints %}
+        <tr>
+          <td>{{ c.id }}</td>
+          <td>{{ c.user_name }}<br><span class="text-muted">{{ c.user_email }}</span></td>
+          <td>{{ c.category }}</td>
+          <td>{{ c.title }}</td>
+          <td style="max-width: 200px;">{{ (c.description or '')[:80] }}{% if (c.description or '')|length > 80 %}...{% endif %}</td>
+          <td>{{ c.location or '-' }}</td>
+          <td><span class="status-badge status-{{ c.status|lower|replace(' ', '') }}">{{ c.status }}</span></td>
+          <td>{{ c.created_at.strftime('%d %b %Y') if c.created_at else '-' }}</td>
+          <td>
+            <form method="post" action="{{ url_for('update_complaint_status', cid=c.id) }}" class="admin-status-form">
+              <select name="status" style="padding: 0.35rem; font-size: 0.85rem; background: rgba(15,23,42,0.8); color: white; border: 1px solid rgba(71,85,105,0.7); border-radius: 4px; margin-right: 0.25rem;">
+                <option value="Pending" {% if c.status == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="In Progress" {% if c.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                <option value="Resolved" {% if c.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+              </select>
+              <input type="text" name="admin_remark" placeholder="Remark" value="{{ c.admin_remark or '' }}" style="width: 90px; padding: 0.35rem; font-size: 0.85rem; background: rgba(15,23,42,0.8); color: white; border: 1px solid rgba(71,85,105,0.7); border-radius: 4px; margin-right: 0.25rem;" />
+              <button type="submit" class="btn btn-primary btn-small">Update</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">No complaints to manage.</p>
+{% endif %}
+{% endblock %}

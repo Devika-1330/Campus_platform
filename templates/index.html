@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Campus Platform — Home{% endblock %}
+{% block content %}
+<div class="hero">
+  <h1>Campus Platform</h1>
+  <p>Report lost or found items and raise campus-related complaints in one place. Track status and get updates from college authorities.</p>
+  <div class="btn-group">
+    <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+    <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+  </div>
+</div>
+{% endblock %}

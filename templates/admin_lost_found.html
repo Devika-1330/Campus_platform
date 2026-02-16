@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Manage Lost & Found — Admin{% endblock %}
+{% block content %}
+<h1 class="page-title">Manage Lost & Found</h1>
+<a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary btn-small mb-2">← Dashboard</a>
+
+<h2 class="section-title">Lost items</h2>
+{% if lost_items %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Reporter</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in lost_items %}
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.item_name }}</td>
+          <td>{{ item.description or '-' }}</td>
+          <td>{{ item.location or '-' }}</td>
+          <td>{{ item.user_name }}</td>
+          <td><span class="status-badge status-{{ item.status }}">{{ item.status }}</span></td>
+          <td>
+            {% if item.status == 'open' %}
+            <form method="post" action="{{ url_for('admin_verify_lost', lid=item.id) }}" style="display: inline;">
+              <button type="submit" class="btn btn-primary btn-small">Verify</button>
+            </form>
+            {% endif %}
+            <form method="post" action="{{ url_for('admin_remove_lost', lid=item.id) }}" style="display: inline;" onsubmit="return confirm('Remove this entry?');">
+              <button type="submit" class="btn btn-danger btn-small">Remove</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">No lost items reported.</p>
+{% endif %}
+
+<h2 class="section-title">Found items</h2>
+{% if found_items %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Reporter</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in found_items %}
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.item_name }}</td>
+          <td>{{ item.description or '-' }}</td>
+          <td>{{ item.location or '-' }}</td>
+          <td>{{ item.user_name }}</td>
+          <td><span class="status-badge status-{{ item.status }}">{{ item.status }}</span></td>
+          <td>
+            {% if item.status == 'open' %}
+            <form method="post" action="{{ url_for('admin_verify_found', fid=item.id) }}" style="display: inline;">
+              <button type="submit" class="btn btn-primary btn-small">Verify</button>
+            </form>
+            {% endif %}
+            <form method="post" action="{{ url_for('admin_remove_found', fid=item.id) }}" style="display: inline;" onsubmit="return confirm('Remove this entry?');">
+              <button type="submit" class="btn btn-danger btn-small">Remove</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">No found items reported.</p>
+{% endif %}
+{% endblock %}

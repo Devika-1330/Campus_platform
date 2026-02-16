@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Report lost item — Campus Platform{% endblock %}
+{% block content %}
+<h1 class="page-title">Report lost item</h1>
+<div class="card" style="max-width: 520px;">
+  <form method="post" action="{{ url_for('report_lost') }}">
+    <div class="form-group">
+      <label for="item_name">Item name *</label>
+      <input type="text" id="item_name" name="item_name" required placeholder="e.g. ID card, Phone, Book" />
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" placeholder="Color, brand, distinguishing marks"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="location">Where lost</label>
+      <input type="text" id="location" name="location" placeholder="e.g. Library, Block A" />
+    </div>
+    <div class="form-group">
+      <label for="date_lost">Date lost</label>
+      <input type="date" id="date_lost" name="date_lost" />
+    </div>
+    <div class="form-group">
+      <label for="contact">Contact (for claimants)</label>
+      <input type="text" id="contact" name="contact" placeholder="Phone or email" />
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="{{ url_for('lost_found') }}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

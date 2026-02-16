@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Lost & Found — Campus Platform{% endblock %}
+{% block content %}
+<h1 class="page-title">Lost & Found</h1>
+<div class="btn-group mb-2">
+  <a href="{{ url_for('report_lost') }}" class="btn btn-primary">Report lost item</a>
+  <a href="{{ url_for('report_found') }}" class="btn btn-primary">Report found item</a>
+</div>
+
+<div class="tabs">
+  <a href="#lost" class="active">Lost items</a>
+  <a href="#found">Found items</a>
+</div>
+
+<h2 class="section-title" id="lost">Lost items</h2>
+{% if lost_items %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Date lost</th>
+          <th>Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in lost_items %}
+        <tr>
+          <td>{{ item.item_name }}</td>
+          <td>{{ item.description or '-' }}</td>
+          <td>{{ item.location or '-' }}</td>
+          <td>{{ item.date_lost or '-' }}</td>
+          <td>{{ item.contact or '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">No lost items reported yet.</p>
+{% endif %}
+
+<h2 class="section-title" id="found">Found items</h2>
+{% if found_items %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Date found</th>
+          <th>Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in found_items %}
+        <tr>
+          <td>{{ item.item_name }}</td>
+          <td>{{ item.description or '-' }}</td>
+          <td>{{ item.location or '-' }}</td>
+          <td>{{ item.date_found or '-' }}</td>
+          <td>{{ item.contact or '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="text-muted">No found items reported yet.</p>
+{% endif %}
+{% endblock %}
