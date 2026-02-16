@@ -103,3 +103,4 @@ campus-platform/
 ## License
 
 MIT (or as per your college project guidelines).
+"# Campus_platform" 
