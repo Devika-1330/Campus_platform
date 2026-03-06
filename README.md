@@ -24,7 +24,6 @@ A college-based integrated web platform for **Lost & Found** and **Campus Compla
 ## Database
 
 MySQL database **campus_platform** with tables:
-
 - **users** — User details (email, password, name)
 - **lost_items** — Lost item reports
 - **found_items** — Found item reports  
